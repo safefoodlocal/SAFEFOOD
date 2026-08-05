@@ -1,0 +1,61 @@
+fig jam
+
+Packing	Shrink contains 12 jars
+Shrink contains 12 jars
+Shrink contains 12 jars
+Weight	330 g
+380 g
+450 g
+Concentration	45%
+45%
+45%
+F. C. L	2300 Shrink
+2250 Shrink
+2200 Shrink
+
+apricot jam
+
+
+Packing	Shrink contains 12 jars
+Shrink contains 12 jars
+Shrink contains 12 jars
+Weight	330 g
+380 g
+450 g
+Concentration	45%
+45%
+45%
+F. C. L	2300 Shrink
+2250 Shrink
+2200 Shrink
+
+date jam
+
+
+Packing	Shrink contains 12 jars
+Shrink contains 12 jars
+Shrink contains 12 jars
+Weight	330 g
+380 g
+450 g
+Concentration	45%
+45%
+45%
+F. C. L	2300 Shrink
+2250 Shrink
+2200 Shrink
+
+strawberry jam 
+
+Packing	Shrink contains 12 jars
+Shrink contains 12 jars
+Shrink contains 12 jars
+Weight	330 g
+380 g
+450 g
+Concentration	45%
+45%
+45%
+F. C. L	2300 Shrink
+2250 Shrink
+2200 Shrink

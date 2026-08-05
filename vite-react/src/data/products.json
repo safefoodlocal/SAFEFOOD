@@ -1,0 +1,78 @@
+{
+  "categories": [
+    {
+      "id": "fresh-fruits-vegetables",
+      "name": "Fresh Fruits & Vegetables",
+      "productCount": 28,
+      "image": "organic-tomatoes.jpg"
+    },
+    {
+      "id": "frozen-fruits-vegetables",
+      "name": "Frozen Fruits & Vegetables",
+      "productCount": 20,
+      "image": "egyptian-grapes.jpg"
+    },
+    {
+      "id": "juice",
+      "name": "Juice",
+      "productCount": 4,
+      "image": null
+    },
+    {
+      "id": "jam",
+      "name": "Jam",
+      "productCount": 4,
+      "image": null
+    },
+    {
+      "id": "olive-oil",
+      "name": "Olive Oil",
+      "productCount": 3,
+      "image": null
+    },
+    {
+      "id": "dried-fruits",
+      "name": "Dried Fruits",
+      "productCount": 6,
+      "image": null
+    },
+    {
+      "id": "herbs-spices",
+      "name": "Herbs & Spices",
+      "productCount": 12,
+      "image": null
+    },
+    {
+      "id": "nuts",
+      "name": "Nuts",
+      "productCount": 8,
+      "image": null
+    }
+  ],
+  "products": [
+    {
+      "id": "tomatoes-roma",
+      "categoryId": "fresh-fruits-vegetables",
+      "name": "Roma Tomatoes",
+      "description": "Premium Roma tomatoes, perfect for export markets. Grown with care in Egyptian farms.",
+      "seasonality": "Year-round with peak in summer",
+      "packaging": "5kg, 10kg cartons"
+    },
+    {
+      "id": "grapes-white",
+      "categoryId": "fresh-fruits-vegetables",
+      "name": "White Grapes",
+      "description": "Sweet white grapes, export quality. Carefully selected and packed for international shipping.",
+      "seasonality": "June - September",
+      "packaging": "4kg, 8kg cartons"
+    },
+    {
+      "id": "frozen-strawberries",
+      "categoryId": "frozen-fruits-vegetables",
+      "name": "Frozen Strawberries",
+      "description": "IQF frozen strawberries, individually quick frozen to preserve freshness and flavor.",
+      "seasonality": "Year-round",
+      "packaging": "1kg, 10kg bags"
+    }
+  ]
+}
