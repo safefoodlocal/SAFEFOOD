@@ -11,14 +11,33 @@ export default function Contact() {
     country: '',
     message: ''
   })
+  const [businessFormData, setBusinessFormData] = useState({
+    companyName: '',
+    contactPerson: '',
+    email: '',
+    phone: '',
+    country: '',
+    productInterest: '',
+    estimatedQuantity: '',
+    message: ''
+  })
   const [errors, setErrors] = useState({})
+  const [businessErrors, setBusinessErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle, submitting, success, error
+  const [businessStatus, setBusinessStatus] = useState('idle')
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
     // Clear error for this field when user starts typing
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: '' })
+    }
+  }
+
+  const handleBusinessChange = (e) => {
+    setBusinessFormData({ ...businessFormData, [e.target.name]: e.target.value })
+    if (businessErrors[e.target.name]) {
+      setBusinessErrors({ ...businessErrors, [e.target.name]: '' })
     }
   }
 
@@ -36,6 +55,24 @@ export default function Contact() {
     if (!formData.message.trim()) newErrors.message = 'Message is required'
     
     setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const validateBusinessForm = () => {
+    const newErrors = {}
+    
+    if (!businessFormData.companyName.trim()) newErrors.companyName = 'Company name is required'
+    if (!businessFormData.contactPerson.trim()) newErrors.contactPerson = 'Contact person is required'
+    if (!businessFormData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(businessFormData.email)) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+    if (!businessFormData.country.trim()) newErrors.country = 'Country is required'
+    if (!businessFormData.productInterest.trim()) newErrors.productInterest = 'Product interest is required'
+    if (!businessFormData.message.trim()) newErrors.message = 'Message is required'
+    
+    setBusinessErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
@@ -71,6 +108,56 @@ export default function Contact() {
     } catch (err) {
       setStatus('error')
       setTimeout(() => setStatus('idle'), 5000)
+    }
+  }
+
+  const handleBusinessSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (!validateBusinessForm()) return
+
+    const cooldown = getSubmissionCooldown('business')
+    if (cooldown > 0) {
+      setBusinessErrors({ form: `Please wait ${Math.ceil(cooldown / 1000)} seconds before sending another message.` })
+      return
+    }
+    
+    setBusinessStatus('submitting')
+    
+    try {
+      // Submit to Formspree
+      const formData = new FormData()
+      formData.append('companyName', businessFormData.companyName)
+      formData.append('contactPerson', businessFormData.contactPerson)
+      formData.append('email', businessFormData.email)
+      formData.append('phone', businessFormData.phone)
+      formData.append('country', businessFormData.country)
+      formData.append('productInterest', businessFormData.productInterest)
+      formData.append('estimatedQuantity', businessFormData.estimatedQuantity)
+      formData.append('message', businessFormData.message)
+      
+      const response = await fetch('https://formspree.io/f/xqazkvzj', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok) {
+        recordSubmission('business')
+        setBusinessStatus('success')
+        setBusinessFormData({ companyName: '', contactPerson: '', email: '', phone: '', country: '', productInterest: '', estimatedQuantity: '', message: '' })
+        setTimeout(() => setBusinessStatus('idle'), 5000)
+      } else {
+        throw new Error(data.error || 'Form submission failed')
+      }
+    } catch (err) {
+      console.error('Form submission error:', err)
+      setBusinessStatus('error')
+      setTimeout(() => setBusinessStatus('idle'), 5000)
     }
   }
 
@@ -201,6 +288,121 @@ export default function Contact() {
             )}
             {errors.form && (
               <p className="message" style={{ display: 'block', color: '#d32f2f' }}>{errors.form}</p>
+            )}
+            <p style={{ fontSize: '0.8rem', color: 'var(--ink)', gridColumn: '1/-1' }}>
+              * Required fields
+            </p>
+          </form>
+          </div>
+        </div>
+      </section>
+      <section className="section" style={{ background: '#fff' }}>
+        <div className="container">
+          <p className="eyebrow">Business Inquiry</p>
+          <h2 style={{ textShadow: '0 2px 8px rgba(0,0,0,0.1)', textAlign: 'center', marginBottom: '48px' }}>Request a Business Quote</h2>
+          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+            <form onSubmit={handleBusinessSubmit}>
+            <label>
+              Company Name *
+              <input 
+                type="text" 
+                name="companyName" 
+                value={businessFormData.companyName}
+                onChange={handleBusinessChange}
+                style={{ borderColor: businessErrors.companyName ? '#d32f2f' : 'var(--line)' }}
+              />
+              {businessErrors.companyName && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.companyName}</span>}
+            </label>
+            <label>
+              Contact Person *
+              <input 
+                type="text" 
+                name="contactPerson" 
+                value={businessFormData.contactPerson}
+                onChange={handleBusinessChange}
+                style={{ borderColor: businessErrors.contactPerson ? '#d32f2f' : 'var(--line)' }}
+              />
+              {businessErrors.contactPerson && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.contactPerson}</span>}
+            </label>
+            <label>
+              Email *
+              <input 
+                type="email" 
+                name="email" 
+                value={businessFormData.email}
+                onChange={handleBusinessChange}
+                style={{ borderColor: businessErrors.email ? '#d32f2f' : 'var(--line)' }}
+              />
+              {businessErrors.email && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.email}</span>}
+            </label>
+            <label>
+              Phone (optional)
+              <input 
+                type="tel" 
+                name="phone" 
+                value={businessFormData.phone}
+                onChange={handleBusinessChange}
+              />
+            </label>
+            <label>
+              Country *
+              <input 
+                type="text" 
+                name="country" 
+                value={businessFormData.country}
+                onChange={handleBusinessChange}
+                style={{ borderColor: businessErrors.country ? '#d32f2f' : 'var(--line)' }}
+              />
+              {businessErrors.country && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.country}</span>}
+            </label>
+            <label>
+              Product Interest *
+              <input 
+                type="text" 
+                name="productInterest" 
+                value={businessFormData.productInterest}
+                onChange={handleBusinessChange}
+                placeholder="e.g., Frozen vegetables, Olive oil, etc."
+                style={{ borderColor: businessErrors.productInterest ? '#d32f2f' : 'var(--line)' }}
+              />
+              {businessErrors.productInterest && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.productInterest}</span>}
+            </label>
+            <label>
+              Estimated Quantity (optional)
+              <input 
+                type="text" 
+                name="estimatedQuantity" 
+                value={businessFormData.estimatedQuantity}
+                onChange={handleBusinessChange}
+                placeholder="e.g., 20ft container, 5 tons, etc."
+              />
+            </label>
+            <label>
+              Message *
+              <textarea 
+                name="message" 
+                value={businessFormData.message}
+                onChange={handleBusinessChange}
+                rows={5}
+                style={{ borderColor: businessErrors.message ? '#d32f2f' : 'var(--line)' }}
+              />
+              {businessErrors.message && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.message}</span>}
+            </label>
+            <button type="submit" className="button" disabled={businessStatus === 'submitting'}>
+              {businessStatus === 'submitting' ? 'Sending...' : 'Submit Inquiry'}
+            </button>
+            {businessStatus === 'success' && (
+              <p className="message" style={{ display: 'block', color: '#A5C03C', fontWeight: '600' }}>
+                Thank you for your inquiry. Our team will contact you within 24-48 hours.
+              </p>
+            )}
+            {businessStatus === 'error' && (
+              <p className="message" style={{ display: 'block', color: '#d32f2f' }}>
+                Something went wrong. Please try again or contact us directly at info@safefoodegypt.com
+              </p>
+            )}
+            {businessErrors.form && (
+              <p className="message" style={{ display: 'block', color: '#d32f2f' }}>{businessErrors.form}</p>
             )}
             <p style={{ fontSize: '0.8rem', color: 'var(--ink)', gridColumn: '1/-1' }}>
               * Required fields

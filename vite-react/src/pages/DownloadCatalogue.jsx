@@ -19,10 +19,10 @@ export default function DownloadCatalogue() {
             <p style={{ color: 'var(--ink)', marginBottom: '32px' }}>
               Complete product listings with specifications, packaging details, and seasonal availability.
             </p>
-            {/* TODO: replace with real catalogue PDF once provided */}
             <a 
-              href="/assets/catalogue/safe-food-catalogue.pdf" 
-              download
+              href="https://download1078.mediafire.com/h4mqhj5o2uzgezpEx_ytXcIKDXBh6u0D_0pO3UEjddEsdY3LZrJUlrbZyNYcqLbJP8M9WSn0NQ4p682PdNib-7iI5nIQR3DMhrE0MmAIsClUlWFkKTsx2_zv3snOM9uyVKHsDaze-uf9pINU4guHRLUMjIoNt7vDP3RQ3rpwxtFVcg/hu7rlqp3p903i6l/safe+food+catalogue+compressed+%283%29.pdf" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="button quote-button"
               style={{ display: 'inline-flex', textDecoration: 'none' }}
             >
