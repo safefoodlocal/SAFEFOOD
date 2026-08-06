@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { apiCall, API_CONFIG } from '../config/api'
+import { useForm, ValidationError } from '@formspree/react'
 import { getSubmissionCooldown, recordSubmission } from '../utils/submissionGuard'
 
 export default function Contact() {
@@ -11,20 +11,11 @@ export default function Contact() {
     country: '',
     message: ''
   })
-  const [businessFormData, setBusinessFormData] = useState({
-    companyName: '',
-    contactPerson: '',
-    email: '',
-    phone: '',
-    country: '',
-    productInterest: '',
-    estimatedQuantity: '',
-    message: ''
-  })
   const [errors, setErrors] = useState({})
-  const [businessErrors, setBusinessErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle, submitting, success, error
-  const [businessStatus, setBusinessStatus] = useState('idle')
+  
+  // Formspree hook for business inquiry form
+  const [businessFormState, handleBusinessSubmit] = useForm('moeavqoo')
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -32,48 +23,6 @@ export default function Contact() {
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: '' })
     }
-  }
-
-  const handleBusinessChange = (e) => {
-    setBusinessFormData({ ...businessFormData, [e.target.name]: e.target.value })
-    if (businessErrors[e.target.name]) {
-      setBusinessErrors({ ...businessErrors, [e.target.name]: '' })
-    }
-  }
-
-  const validateForm = () => {
-    const newErrors = {}
-    
-    if (!formData.name.trim()) newErrors.name = 'Name is required'
-    if (!formData.company.trim()) newErrors.company = 'Company name is required'
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
-    }
-    if (!formData.country.trim()) newErrors.country = 'Country is required'
-    if (!formData.message.trim()) newErrors.message = 'Message is required'
-    
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const validateBusinessForm = () => {
-    const newErrors = {}
-    
-    if (!businessFormData.companyName.trim()) newErrors.companyName = 'Company name is required'
-    if (!businessFormData.contactPerson.trim()) newErrors.contactPerson = 'Contact person is required'
-    if (!businessFormData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(businessFormData.email)) {
-      newErrors.email = 'Please enter a valid email address'
-    }
-    if (!businessFormData.country.trim()) newErrors.country = 'Country is required'
-    if (!businessFormData.productInterest.trim()) newErrors.productInterest = 'Product interest is required'
-    if (!businessFormData.message.trim()) newErrors.message = 'Message is required'
-    
-    setBusinessErrors(newErrors)
-    return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e) => {
@@ -111,40 +60,21 @@ export default function Contact() {
     }
   }
 
-  const handleBusinessSubmit = async (e) => {
-    e.preventDefault()
+  const validateForm = () => {
+    const newErrors = {}
     
-    if (!validateBusinessForm()) return
-
-    const cooldown = getSubmissionCooldown('business')
-    if (cooldown > 0) {
-      setBusinessErrors({ form: `Please wait ${Math.ceil(cooldown / 1000)} seconds before sending another message.` })
-      return
+    if (!formData.name.trim()) newErrors.name = 'Name is required'
+    if (!formData.company.trim()) newErrors.company = 'Company name is required'
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address'
     }
+    if (!formData.country.trim()) newErrors.country = 'Country is required'
+    if (!formData.message.trim()) newErrors.message = 'Message is required'
     
-    setBusinessStatus('submitting')
-    
-    try {
-      // Try backend API first (when ready)
-      // TODO: Uncomment when backend is deployed
-      // await apiCall(API_CONFIG.CONTACT, {
-      //   method: 'POST',
-      //   body: JSON.stringify(businessFormData)
-      // })
-      
-      // Fallback: Placeholder mode - simulate submission
-      // Remove this when backend is ready
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      recordSubmission('business')
-      
-      setBusinessStatus('success')
-      setBusinessFormData({ companyName: '', contactPerson: '', email: '', phone: '', country: '', productInterest: '', estimatedQuantity: '', message: '' })
-      setTimeout(() => setBusinessStatus('idle'), 5000)
-    } catch (err) {
-      console.error('Form submission error:', err)
-      setBusinessStatus('error')
-      setTimeout(() => setBusinessStatus('idle'), 5000)
-    }
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   return (
@@ -287,113 +217,89 @@ export default function Contact() {
           <p className="eyebrow">Business Inquiry</p>
           <h2 style={{ textShadow: '0 2px 8px rgba(0,0,0,0.1)', textAlign: 'center', marginBottom: '48px' }}>Request a Business Quote</h2>
           <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-            <form onSubmit={handleBusinessSubmit}>
-            <label>
-              Company Name *
-              <input 
-                type="text" 
-                name="companyName" 
-                value={businessFormData.companyName}
-                onChange={handleBusinessChange}
-                style={{ borderColor: businessErrors.companyName ? '#d32f2f' : 'var(--line)' }}
-              />
-              {businessErrors.companyName && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.companyName}</span>}
-            </label>
-            <label>
-              Contact Person *
-              <input 
-                type="text" 
-                name="contactPerson" 
-                value={businessFormData.contactPerson}
-                onChange={handleBusinessChange}
-                style={{ borderColor: businessErrors.contactPerson ? '#d32f2f' : 'var(--line)' }}
-              />
-              {businessErrors.contactPerson && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.contactPerson}</span>}
-            </label>
-            <label>
-              Email *
-              <input 
-                type="email" 
-                name="email" 
-                value={businessFormData.email}
-                onChange={handleBusinessChange}
-                style={{ borderColor: businessErrors.email ? '#d32f2f' : 'var(--line)' }}
-              />
-              {businessErrors.email && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.email}</span>}
-            </label>
-            <label>
-              Phone (optional)
-              <input 
-                type="tel" 
-                name="phone" 
-                value={businessFormData.phone}
-                onChange={handleBusinessChange}
-              />
-            </label>
-            <label>
-              Country *
-              <input 
-                type="text" 
-                name="country" 
-                value={businessFormData.country}
-                onChange={handleBusinessChange}
-                style={{ borderColor: businessErrors.country ? '#d32f2f' : 'var(--line)' }}
-              />
-              {businessErrors.country && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.country}</span>}
-            </label>
-            <label>
-              Product Interest *
-              <input 
-                type="text" 
-                name="productInterest" 
-                value={businessFormData.productInterest}
-                onChange={handleBusinessChange}
-                placeholder="e.g., Frozen vegetables, Olive oil, etc."
-                style={{ borderColor: businessErrors.productInterest ? '#d32f2f' : 'var(--line)' }}
-              />
-              {businessErrors.productInterest && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.productInterest}</span>}
-            </label>
-            <label>
-              Estimated Quantity (optional)
-              <input 
-                type="text" 
-                name="estimatedQuantity" 
-                value={businessFormData.estimatedQuantity}
-                onChange={handleBusinessChange}
-                placeholder="e.g., 20ft container, 5 tons, etc."
-              />
-            </label>
-            <label>
-              Message *
-              <textarea 
-                name="message" 
-                value={businessFormData.message}
-                onChange={handleBusinessChange}
-                rows={5}
-                style={{ borderColor: businessErrors.message ? '#d32f2f' : 'var(--line)' }}
-              />
-              {businessErrors.message && <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{businessErrors.message}</span>}
-            </label>
-            <button type="submit" className="button" disabled={businessStatus === 'submitting'}>
-              {businessStatus === 'submitting' ? 'Sending...' : 'Submit Inquiry'}
-            </button>
-            {businessStatus === 'success' && (
-              <p className="message" style={{ display: 'block', color: '#A5C03C', fontWeight: '600' }}>
-                Thank you for your inquiry. Our team will contact you within 24-48 hours.
-              </p>
+            {businessFormState.succeeded ? (
+              <div style={{ textAlign: 'center', padding: '40px', background: '#f4f7e8', borderRadius: '12px' }}>
+                <i className="fas fa-check-circle" style={{ fontSize: '3rem', color: '#A5C03C', marginBottom: '16px' }}></i>
+                <h3 style={{ color: '#161616', marginBottom: '8px' }}>Thank you for your inquiry!</h3>
+                <p style={{ color: '#161616', fontWeight: '600' }}>Our team will contact you within 24-48 hours.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleBusinessSubmit}>
+                <label>
+                  Company Name *
+                  <input 
+                    type="text" 
+                    name="companyName" 
+                    required
+                  />
+                  <ValidationError prefix="Company" field="companyName" errors={businessFormState.errors} />
+                </label>
+                <label>
+                  Contact Person *
+                  <input 
+                    type="text" 
+                    name="contactPerson" 
+                    required
+                  />
+                  <ValidationError prefix="Contact person" field="contactPerson" errors={businessFormState.errors} />
+                </label>
+                <label>
+                  Email *
+                  <input 
+                    type="email" 
+                    name="email" 
+                    required
+                  />
+                  <ValidationError prefix="Email" field="email" errors={businessFormState.errors} />
+                </label>
+                <label>
+                  Phone (optional)
+                  <input 
+                    type="tel" 
+                    name="phone" 
+                  />
+                </label>
+                <label>
+                  Country *
+                  <input 
+                    type="text" 
+                    name="country" 
+                    required
+                  />
+                  <ValidationError prefix="Country" field="country" errors={businessFormState.errors} />
+                </label>
+                <label>
+                  Product Interest *
+                  <input 
+                    type="text" 
+                    name="productInterest" 
+                    placeholder="e.g., Frozen vegetables, Olive oil, etc."
+                    required
+                  />
+                  <ValidationError prefix="Product interest" field="productInterest" errors={businessFormState.errors} />
+                </label>
+                <label>
+                  Estimated Quantity (optional)
+                  <input 
+                    type="text" 
+                    name="estimatedQuantity" 
+                    placeholder="e.g., 20ft container, 5 tons, etc."
+                  />
+                </label>
+                <label>
+                  Message *
+                  <textarea 
+                    name="message" 
+                    rows={5}
+                    required
+                  />
+                  <ValidationError prefix="Message" field="message" errors={businessFormState.errors} />
+                </label>
+                <button type="submit" className="button" disabled={businessFormState.submitting}>
+                  {businessFormState.submitting ? 'Sending...' : 'Submit Inquiry'}
+                </button>
+              </form>
             )}
-            {businessStatus === 'error' && (
-              <p className="message" style={{ display: 'block', color: '#d32f2f' }}>
-                Something went wrong. Please try again or contact us directly at info@safefoodegypt.com
-              </p>
-            )}
-            {businessErrors.form && (
-              <p className="message" style={{ display: 'block', color: '#d32f2f' }}>{businessErrors.form}</p>
-            )}
-            <p style={{ fontSize: '0.8rem', color: 'var(--ink)', gridColumn: '1/-1' }}>
-              * Required fields
-            </p>
-          </form>
           </div>
         </div>
       </section>
