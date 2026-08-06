@@ -125,35 +125,21 @@ export default function Contact() {
     setBusinessStatus('submitting')
     
     try {
-      // Submit to Formspree
-      const formData = new FormData()
-      formData.append('companyName', businessFormData.companyName)
-      formData.append('contactPerson', businessFormData.contactPerson)
-      formData.append('email', businessFormData.email)
-      formData.append('phone', businessFormData.phone)
-      formData.append('country', businessFormData.country)
-      formData.append('productInterest', businessFormData.productInterest)
-      formData.append('estimatedQuantity', businessFormData.estimatedQuantity)
-      formData.append('message', businessFormData.message)
+      // Try backend API first (when ready)
+      // TODO: Uncomment when backend is deployed
+      // await apiCall(API_CONFIG.CONTACT, {
+      //   method: 'POST',
+      //   body: JSON.stringify(businessFormData)
+      // })
       
-      const response = await fetch('https://formspree.io/f/xqazkvzj', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      })
+      // Fallback: Placeholder mode - simulate submission
+      // Remove this when backend is ready
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      recordSubmission('business')
       
-      const data = await response.json()
-      
-      if (response.ok) {
-        recordSubmission('business')
-        setBusinessStatus('success')
-        setBusinessFormData({ companyName: '', contactPerson: '', email: '', phone: '', country: '', productInterest: '', estimatedQuantity: '', message: '' })
-        setTimeout(() => setBusinessStatus('idle'), 5000)
-      } else {
-        throw new Error(data.error || 'Form submission failed')
-      }
+      setBusinessStatus('success')
+      setBusinessFormData({ companyName: '', contactPerson: '', email: '', phone: '', country: '', productInterest: '', estimatedQuantity: '', message: '' })
+      setTimeout(() => setBusinessStatus('idle'), 5000)
     } catch (err) {
       console.error('Form submission error:', err)
       setBusinessStatus('error')
