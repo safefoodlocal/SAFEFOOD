@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useForm, ValidationError } from '@formspree/react'
 import { getSubmissionCooldown, recordSubmission } from '../utils/submissionGuard'
 
 export default function Contact() {
@@ -14,14 +13,30 @@ export default function Contact() {
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle, submitting, success, error
   
-  // Formspree hook for business inquiry form
-  const [businessFormState, handleBusinessSubmit] = useForm('moeavqoo')
+  const [businessFormData, setBusinessFormData] = useState({
+    companyName: '',
+    contactPerson: '',
+    email: '',
+    phone: '',
+    country: '',
+    productInterest: '',
+    estimatedQuantity: '',
+    message: ''
+  })
+  const [businessErrors, setBusinessErrors] = useState({})
+  const [businessStatus, setBusinessStatus] = useState('idle')
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
-    // Clear error for this field when user starts typing
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: '' })
+    }
+  }
+
+  const handleBusinessChange = (e) => {
+    setBusinessFormData({ ...businessFormData, [e.target.name]: e.target.value })
+    if (businessErrors[e.target.name]) {
+      setBusinessErrors({ ...businessErrors, [e.target.name]: '' })
     }
   }
 
@@ -75,6 +90,51 @@ export default function Contact() {
     
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
+  }
+
+  const validateBusinessForm = () => {
+    const newErrors = {}
+    
+    if (!businessFormData.companyName.trim()) newErrors.companyName = 'Company name is required'
+    if (!businessFormData.contactPerson.trim()) newErrors.contactPerson = 'Contact person is required'
+    if (!businessFormData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(businessFormData.email)) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+    if (!businessFormData.country.trim()) newErrors.country = 'Country is required'
+    if (!businessFormData.productInterest.trim()) newErrors.productInterest = 'Product interest is required'
+    if (!businessFormData.message.trim()) newErrors.message = 'Message is required'
+    
+    setBusinessErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleBusinessSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (!validateBusinessForm()) return
+
+    const cooldown = getSubmissionCooldown('business')
+    if (cooldown > 0) {
+      setBusinessErrors({ form: `Please wait ${Math.ceil(cooldown / 1000)} seconds before sending another message.` })
+      return
+    }
+    
+    setBusinessStatus('submitting')
+    
+    try {
+      // Placeholder mode - simulate submission
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      recordSubmission('business')
+      
+      setBusinessStatus('success')
+      setBusinessFormData({ companyName: '', contactPerson: '', email: '', phone: '', country: '', productInterest: '', estimatedQuantity: '', message: '' })
+      setTimeout(() => setBusinessStatus('idle'), 5000)
+    } catch (err) {
+      setBusinessStatus('error')
+      setTimeout(() => setBusinessStatus('idle'), 5000)
+    }
   }
 
   return (
@@ -217,7 +277,7 @@ export default function Contact() {
           <p className="eyebrow">Business Inquiry</p>
           <h2 style={{ textShadow: '0 2px 8px rgba(0,0,0,0.1)', textAlign: 'center', marginBottom: '48px' }}>Request a Business Quote</h2>
           <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-            {businessFormState.succeeded ? (
+            {businessStatus === 'success' ? (
               <div style={{ textAlign: 'center', padding: '40px', background: '#f4f7e8', borderRadius: '12px' }}>
                 <i className="fas fa-check-circle" style={{ fontSize: '3rem', color: '#A5C03C', marginBottom: '16px' }}></i>
                 <h3 style={{ color: '#161616', marginBottom: '8px' }}>Thank you for your inquiry!</h3>
@@ -225,38 +285,47 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleBusinessSubmit}>
+                {businessErrors.form && <div style={{ color: 'red', marginBottom: '16px', textAlign: 'center' }}>{businessErrors.form}</div>}
                 <label>
                   Company Name *
                   <input 
                     type="text" 
                     name="companyName" 
+                    value={businessFormData.companyName}
+                    onChange={handleBusinessChange}
                     required
                   />
-                  <ValidationError prefix="Company" field="companyName" errors={businessFormState.errors} />
+                  {businessErrors.companyName && <span style={{ color: 'red', fontSize: '0.85rem' }}>{businessErrors.companyName}</span>}
                 </label>
                 <label>
                   Contact Person *
                   <input 
                     type="text" 
                     name="contactPerson" 
+                    value={businessFormData.contactPerson}
+                    onChange={handleBusinessChange}
                     required
                   />
-                  <ValidationError prefix="Contact person" field="contactPerson" errors={businessFormState.errors} />
+                  {businessErrors.contactPerson && <span style={{ color: 'red', fontSize: '0.85rem' }}>{businessErrors.contactPerson}</span>}
                 </label>
                 <label>
                   Email *
                   <input 
                     type="email" 
                     name="email" 
+                    value={businessFormData.email}
+                    onChange={handleBusinessChange}
                     required
                   />
-                  <ValidationError prefix="Email" field="email" errors={businessFormState.errors} />
+                  {businessErrors.email && <span style={{ color: 'red', fontSize: '0.85rem' }}>{businessErrors.email}</span>}
                 </label>
                 <label>
                   Phone (optional)
                   <input 
                     type="tel" 
                     name="phone" 
+                    value={businessFormData.phone}
+                    onChange={handleBusinessChange}
                   />
                 </label>
                 <label>
@@ -264,9 +333,11 @@ export default function Contact() {
                   <input 
                     type="text" 
                     name="country" 
+                    value={businessFormData.country}
+                    onChange={handleBusinessChange}
                     required
                   />
-                  <ValidationError prefix="Country" field="country" errors={businessFormState.errors} />
+                  {businessErrors.country && <span style={{ color: 'red', fontSize: '0.85rem' }}>{businessErrors.country}</span>}
                 </label>
                 <label>
                   Product Interest *
@@ -274,9 +345,11 @@ export default function Contact() {
                     type="text" 
                     name="productInterest" 
                     placeholder="e.g., Frozen vegetables, Olive oil, etc."
+                    value={businessFormData.productInterest}
+                    onChange={handleBusinessChange}
                     required
                   />
-                  <ValidationError prefix="Product interest" field="productInterest" errors={businessFormState.errors} />
+                  {businessErrors.productInterest && <span style={{ color: 'red', fontSize: '0.85rem' }}>{businessErrors.productInterest}</span>}
                 </label>
                 <label>
                   Estimated Quantity (optional)
@@ -284,6 +357,8 @@ export default function Contact() {
                     type="text" 
                     name="estimatedQuantity" 
                     placeholder="e.g., 20ft container, 5 tons, etc."
+                    value={businessFormData.estimatedQuantity}
+                    onChange={handleBusinessChange}
                   />
                 </label>
                 <label>
@@ -291,12 +366,14 @@ export default function Contact() {
                   <textarea 
                     name="message" 
                     rows={5}
+                    value={businessFormData.message}
+                    onChange={handleBusinessChange}
                     required
                   />
-                  <ValidationError prefix="Message" field="message" errors={businessFormState.errors} />
+                  {businessErrors.message && <span style={{ color: 'red', fontSize: '0.85rem' }}>{businessErrors.message}</span>}
                 </label>
-                <button type="submit" className="button" disabled={businessFormState.submitting}>
-                  {businessFormState.submitting ? 'Sending...' : 'Submit Inquiry'}
+                <button type="submit" className="button" disabled={businessStatus === 'submitting'}>
+                  {businessStatus === 'submitting' ? 'Sending...' : 'Submit Inquiry'}
                 </button>
               </form>
             )}
