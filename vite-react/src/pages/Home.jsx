@@ -102,9 +102,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <p style={{ marginTop: '28px' }}>
-            <Link to="/products" className="button" style={{ background: '#fff', color: '#161616 !important' }}>View all 8 categories <i className="fas fa-arrow-right"></i></Link>
-          </p>
         </div>
       </section>
       <section className="section" style={{ background: '#A5C03C', color: '#fff' }}>
