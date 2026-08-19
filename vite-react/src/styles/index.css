@@ -485,6 +485,25 @@ h3 {
 .category-slider:hover .category-track { animation-play-state: paused; }
 .category-slider .category { width: 280px; flex: 0 0 280px; }
 
+@media(max-width: 768px) {
+  .category-slider {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding: 8px 16px;
+  }
+
+  .category-slider .category-track {
+    animation: none;
+    width: auto;
+  }
+
+  .category-slider .category {
+    scroll-snap-align: start;
+  }
+}
+
 .category.no-image {
   background: var(--pale);
   color: var(--ink);
@@ -1014,6 +1033,26 @@ footer {
 .partners-track { display: flex; width: max-content; gap: 14px; animation: partnerSlide 32s linear infinite; }
 .partners-slider:hover .partners-track { animation-play-state: paused; }
 .partners-slider .partner-logo { width: 178px; flex: 0 0 178px; }
+
+@media(max-width: 768px) {
+  .partners-slider {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding: 8px 16px;
+    mask-image: none;
+  }
+
+  .partners-slider .partners-track {
+    animation: none;
+    width: auto;
+  }
+
+  .partners-slider .partner-logo {
+    scroll-snap-align: start;
+  }
+}
 .partner-logo { min-height: 112px; padding: 18px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 10px; background: #fff; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
 .partner-logo:hover { transform: translateY(-5px); border-color: var(--color-primary); box-shadow: 0 14px 30px rgba(0,0,0,.12); }
 .partner-logo img { width: 100%; max-width: 130px; max-height: 62px; object-fit: contain; filter: saturate(.9); }
@@ -1041,18 +1080,30 @@ footer {
   }
 
   .links.open {
-    position: absolute;
+    position: fixed;
     display: flex;
-    z-index: 3;
+    z-index: 1000;
     left: 0;
-    right: 0;
-    top: 100px;
+    top: 0;
+    bottom: 0;
+    width: 280px;
     padding: 24px;
     background: #fff;
     flex-direction: column;
     align-items: stretch;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.15);
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .links.open a {
+    padding: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .links.open .quote-button {
+    margin-top: 16px;
   }
 
   .hero-grid,
