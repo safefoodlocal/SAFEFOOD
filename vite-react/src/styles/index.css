@@ -1107,7 +1107,7 @@ footer {
     bottom: 0;
     width: 320px;
     padding: 0;
-    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    background: #ffffff;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -1122,20 +1122,12 @@ footer {
   }
 
   .links.open::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 120px;
-    background: linear-gradient(135deg, #A5C03C 0%, #8ba332 100%);
-    border-bottom-left-radius: 24px;
-    border-bottom-right-radius: 24px;
+    display: none;
   }
 
   .links.open a {
-    padding: 18px 24px;
-    border-bottom: none;
+    padding: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     font-size: 1rem;
     font-weight: 600;
     color: #161616;
@@ -1145,18 +1137,17 @@ footer {
   }
 
   .links.open a:hover {
-    background: rgba(165, 192, 60, 0.1);
-    padding-left: 32px;
+    background: rgba(165, 192, 60, 0.08);
   }
 
   .links.open a.active {
-    background: rgba(165, 192, 60, 0.15);
+    background: rgba(165, 192, 60, 0.12);
     color: #A5C03C;
   }
 
   .links.open a i {
     font-size: 1.1rem;
-    margin-right: 12px;
+    margin-right: 16px;
     width: 24px;
     text-align: center;
     color: #A5C03C;
@@ -1167,44 +1158,41 @@ footer {
   }
 
   .links.open .quote-button {
-    margin-top: 16px;
-    margin-left: 24px;
-    margin-right: 24px;
-    padding: 16px 24px;
-    background: linear-gradient(135deg, #A5C03C 0%, #8ba332 100%);
+    margin: 24px;
+    padding: 18px 24px;
+    background: #A5C03C;
     border-radius: 12px;
     font-weight: 700;
-    box-shadow: 0 4px 16px rgba(165, 192, 60, 0.35);
+    box-shadow: 0 4px 16px rgba(165, 192, 60, 0.25);
     transition: all 0.3s ease;
   }
 
   .links.open .quote-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(165, 192, 60, 0.45);
-    padding-left: 24px;
+    box-shadow: 0 6px 20px rgba(165, 192, 60, 0.35);
   }
 
   .links.open .whatsapp-nav-link {
-    margin: 16px 24px 24px;
-    padding: 16px;
+    margin: 0 24px 24px;
+    padding: 18px 24px;
     background: #25D366;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+    box-shadow: 0 0 20px rgba(37, 211, 102, 0.5), 0 0 40px rgba(37, 211, 102, 0.3);
     transition: all 0.3s ease;
   }
 
   .links.open .whatsapp-nav-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    box-shadow: 0 0 30px rgba(37, 211, 102, 0.7), 0 0 60px rgba(37, 211, 102, 0.4);
     background: #20bd5a;
   }
 
   .links.open .whatsapp-nav-link svg {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
   }
 
   .hero-grid,
