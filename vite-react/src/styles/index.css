@@ -1066,13 +1066,21 @@ footer {
   50% { opacity: 1; }
 }
 
-@media(max-width: 850px) {
+@media(max-width: 768px) {
   .menu {
-    display: block;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     color: var(--ink);
     border: 1px solid var(--line);
     padding: 6px 8px;
+    z-index: 1001;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
   }
 
   .links {
