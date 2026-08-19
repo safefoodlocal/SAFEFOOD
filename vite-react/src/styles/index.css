@@ -1190,6 +1190,81 @@ footer {
     background: #20bd5a;
   }
 
+  .links.open .mega-menu-container {
+    position: static;
+  }
+
+  .links.open .mega-menu-trigger {
+    padding: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #161616;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .links.open .mega-menu-trigger i:first-child {
+    margin-right: 16px;
+    color: #A5C03C;
+  }
+
+  .links.open .mega-menu-trigger .fa-chevron-down {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+  }
+
+  .links.open .mega-menu-trigger .fa-chevron-down.rotate {
+    transform: rotate(180deg);
+  }
+
+  .links.open .mega-menu {
+    position: static;
+    transform: none;
+    min-width: 100%;
+    background: #f8f9fa;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .links.open .mega-menu.open {
+    max-height: 500px;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .links.open .mega-menu-content {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0;
+  }
+
+  .links.open .mega-menu-category {
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    background: #f8f9fa;
+    border-radius: 0;
+    box-shadow: none;
+    transition: background 0.2s ease;
+  }
+
+  .links.open .mega-menu-category:hover {
+    background: rgba(165, 192, 60, 0.1);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .links.open .mega-menu-category h4 {
+    font-size: 0.95rem;
+    color: #161616;
+  }
+
   .links.open .whatsapp-nav-link svg {
     width: 36px;
     height: 36px;
