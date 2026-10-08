@@ -6,8 +6,9 @@ export default function Control() {
   const [form, setForm] = useState(empty), [edit, setEdit] = useState(null), [loggedIn, setLoggedIn] = useState(false), [error, setError] = useState('')
   async function api(path, body) {
     const response = await fetch('/api' + path, { method: body ? 'POST' : 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: body && JSON.stringify(body) })
-    if (!response.ok) throw Error(response.status)
-    return response.json()
+    const result = await response.json().catch(() => ({}))
+    if (!response.ok) throw Error(result.error || response.status)
+    return result
   }
   async function load() { const items = await api('/admin/posts'); setPosts(items); setLoggedIn(true); setError('') }
   useEffect(() => { load().catch(() => setLoggedIn(false)) }, [])
@@ -23,7 +24,7 @@ export default function Control() {
   async function save(event) {
     event.preventDefault()
     try { await api('/posts', { ...form, id: edit }); setForm(empty); setEdit(null); await load() }
-    catch { setError('Could not save this story. Please sign in again and retry.') }
+    catch (error) { setError(error.message.includes('storage') ? 'Blog storage is not configured on the live site yet.' : 'Could not save this story. Please sign in again and retry.') }
   }
   async function login(event) {
     event.preventDefault()

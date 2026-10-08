@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import berries from '../assets/fresh/strawberries.png'
 import FoodIcon from '../components/FoodIcon'
+import starterPosts from '../data/posts.json'
 const storyIcons = ['mug', 'oil', 'plate', 'sprout', 'citrus', 'snow']
 const paths = {
   leaf: <><path d="M20 4C12 4 6 7 5 13c-.7 4 2.2 7 6 6 6-1 9-7 9-15Z"/><path d="M4 21c3-6 7-9 13-12"/></>,
@@ -12,8 +13,8 @@ const Icon = ({ name }) => <svg viewBox="0 0 24 24" aria-hidden="true" fill="non
 const date = value => new Date(value).toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })
 const box = { maxWidth: 1180, margin: 'auto', padding: 'clamp(28px,6vw,76px) 22px' }
 export default function Blog() {
-  const { slug } = useParams(), [posts, setPosts] = useState([])
-  useEffect(() => { fetch('/api/posts').then(r => r.json()).then(setPosts).catch(() => {}) }, [])
+  const { slug } = useParams(), [posts, setPosts] = useState(starterPosts)
+  useEffect(() => { fetch('/api/posts').then(r => r.ok ? r.json() : Promise.reject()).then(setPosts).catch(() => {}) }, [])
   const post = posts.find(p => p.slug === slug), stories = [...posts].sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt))
   if (slug) {
     if (!post) return <main style={box}><Link className="journal-back" to="/blog">← Journal</Link><p>Loading story…</p></main>
