@@ -9,6 +9,8 @@ import ProductCategory from './pages/ProductCategory'
 import ProductDetail from './pages/ProductDetail'
 import DownloadCatalogue from './pages/DownloadCatalogue'
 import Contact from './pages/Contact'
+import Blog from './pages/Blog'
+import Control from './pages/Control'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -34,6 +36,9 @@ function App() {
         <Route path="/products/:category/:subcategory/:product" element={<ProductDetail />} />
         <Route path="/download-catalogue" element={<DownloadCatalogue />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<Blog />} />
+        <Route path="/control" element={<Control />} />
       </Routes>
       <Footer />
     </BrowserRouter>

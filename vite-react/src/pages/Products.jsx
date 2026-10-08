@@ -1,16 +1,13 @@
 import { Link } from 'react-router-dom'
 import { catalog } from '../data/catalog'
 import { useEffect, useRef } from 'react'
+import FoodIcon from '../components/FoodIcon'
 
 const categoryIcons = {
-  'fresh-produce': 'fa-apple-alt',
-  'frozen-produce': 'fa-snowflake',
-  'dehydrated-products': 'fa-wheat-awn',
-  'jams-preserves': 'fa-jar',
-  'juices-beverages': 'fa-glass-water',
-  'olive-oil': 'fa-oil-can',
-  'tomato-paste': 'fa-box',
-  'legumes-nuts': 'fa-seedling'
+  'fresh-produce': 'apple', 'frozen-produce': 'snow',
+  'dehydrated-products': 'wheat', 'jams-preserves': 'jar',
+  'juices-beverages': 'glass', 'olive-oil': 'oil',
+  'tomato-paste': 'tomato', 'legumes-nuts': 'sprout'
 }
 
 export default function Products() {
@@ -48,20 +45,24 @@ export default function Products() {
         <div className="container">
           <div className="catalog-grid reveal" ref={gridRef}>
             {catalog.map((category) => {
-              const icon = categoryIcons[category.id] || 'fa-box'
+              const icon = categoryIcons[category.id] || 'apple'
               return (
-                <div key={category.id} className="catalog-category-card">
-                  <div className="category-icon">
-                    <i className={`fas ${icon}`} style={{ fontSize: '2.5rem', color: '#A5C03C' }}></i>
+                <Link key={category.id} to={`/products/${category.id}`} className="catalog-category-card">
+                  <div className={`category-art category-art-${category.id}`}>
+                    <span className="category-orbit orbit-one"/><span className="category-orbit orbit-two"/>
+                    <span className="category-art-icon"><FoodIcon name={icon}/></span>
+                    <span className="category-spark spark-one">✦</span><span className="category-spark spark-two">✧</span>
+                    <span className="category-icon"><FoodIcon name={icon}/></span>
                   </div>
-                  <h3>{category.name}</h3>
-                  <p className="category-count">
-                    {category.subcategories.reduce((acc, sub) => acc + sub.products.length, 0)} products
-                  </p>
-                  <Link to={`/products/${category.id}`} className="view-button">
-                    View category <i className="fas fa-arrow-right"></i>
-                  </Link>
-                </div>
+                  <div className="category-card-copy">
+                    <span className="category-kicker">SAFE FOOD · EGYPT</span>
+                    <h3>{category.name}</h3>
+                    <p className="category-count">
+                      {category.subcategories.reduce((acc, sub) => acc + sub.products.length, 0)} products
+                    </p>
+                    <span className="view-button">Explore collection <i className="fas fa-arrow-right" aria-hidden="true"></i></span>
+                  </div>
+                </Link>
               )
             })}
           </div>

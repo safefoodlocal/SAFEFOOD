@@ -18,6 +18,7 @@ export default function Header() {
       <Link to="/" className={location.pathname === '/' ? 'active' : ''}><i className="fas fa-home"></i> Home</Link>
       <Link to="/about" className={location.pathname === '/about' ? 'active' : ''}><i className="fas fa-info-circle"></i> About us</Link><ProductMegaMenu />
       <Link to="/download-catalogue" className={location.pathname === '/download-catalogue' ? 'active' : ''}><i className="fas fa-book-open" style={{ color: '#A5C03C' }}></i> Catalogue</Link>
+      <Link to="/blog" onClick={() => setIsOpen(false)} className={location.pathname.startsWith('/blog') ? 'active' : ''}><i className="fas fa-pen-nib"></i> Blog</Link>
       <Link to="/contact" className={location.pathname === '/contact' ? 'active' : ''}><i className="fas fa-envelope"></i> Reach us</Link>
       <Link to="/contact" className="button quote-button">Request a quote <i className="fas fa-arrow-right"></i></Link>
       <a href="https://api.whatsapp.com/send/?phone=201276999060&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" aria-label="Contact us on WhatsApp" className="whatsapp-nav-link">

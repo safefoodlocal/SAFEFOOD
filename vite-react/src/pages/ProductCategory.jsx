@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { catalog } from '../data/catalog'
+import FoodIcon from '../components/FoodIcon'
 
 // Import fresh produce images
 import artichoke from '../assets/fresh/artichoke.png'
@@ -168,6 +169,12 @@ const productImages = {
   'sachets': sachet,
   'tins-cans': tin
 }
+const categoryIcons = {
+  'fresh-produce': 'apple', 'frozen-produce': 'snow',
+  'dehydrated-products': 'wheat', 'jams-preserves': 'jar',
+  'juices-beverages': 'glass', 'olive-oil': 'oil',
+  'tomato-paste': 'tomato', 'legumes-nuts': 'sprout'
+}
 
 export default function ProductCategory() {
   const { category } = useParams()
@@ -189,7 +196,7 @@ export default function ProductCategory() {
           <div className="category-nav">
             {catalog.map((cat) => (
               <Link key={cat.id} to={`/products/${cat.id}`} className={cat.id === category ? 'active' : ''}>
-                {cat.name}
+                <FoodIcon name={categoryIcons[cat.id] || 'apple'}/> {cat.name}
               </Link>
             ))}
           </div>
