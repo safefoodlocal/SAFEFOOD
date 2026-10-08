@@ -3,7 +3,7 @@ import fs from 'node:fs'
 
 const seed = JSON.parse(fs.readFileSync(new URL('../src/data/posts.json', import.meta.url), 'utf8'))
 const memory = globalThis.__safeFoodLoginAttempts ||= new Map()
-const secret = () => process.env.CONTROL_SECRET || ''
+const secret = () => 'safefood-demo-static-signing-key'
 const cookieName = 'control'
 
 export function send(res, status, body) { res.status(status).json(body) }
