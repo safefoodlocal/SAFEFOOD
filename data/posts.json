@@ -24,14 +24,6 @@
     "updatedAt": "2026-09-26T12:39:27.376Z"
   },
   {
-    "id": "67ab51ce-7c43-4cb1-b360-d312fe3bdae9",
-    "slug": "the-bright-easy-joy-of-citrus",
-    "title": "The bright, easy joy of citrus",
-    "content": "A squeeze of lemon can wake up a soup, a salad dressing or a glass of cold water. Citrus is one of those small ingredients that makes a big difference.\n\nUse the whole fruit\nZest the peel before juicing, then add a little zest to dressings or baked treats. Store the fruit in the refrigerator to keep it fresh for longer.",
-    "createdAt": "2026-09-22T12:39:27.376Z",
-    "updatedAt": "2026-09-22T12:39:27.376Z"
-  },
-  {
     "id": "bfc293cb-0d30-4b85-b5ea-e6b8c66397b4",
     "slug": "a-freezer-full-of-good-ideas",
     "title": "A freezer full of good ideas",
@@ -47,5 +39,14 @@
     "image": "",
     "createdAt": "2026-10-08T12:39:27.376Z",
     "updatedAt": "2026-10-19T10:08:36.737Z"
+  },
+  {
+    "id": "67ab51ce-7c43-4cb1-b360-d312fe3bdae9",
+    "slug": "the-bright-easy-joy-of-citrus",
+    "title": "The bright, easy joy of citrus",
+    "content": "A squeeze of lemon can wake up a soup, a salad dressing or a glass of cold water. Citrus is one of those small ingredients that makes a big difference.\n\nUse the whole fruit\nZest the peel before juicing, then add a little zest to dressings or baked treats. Store the fruit in the refrigerator to keep it fresh for longer.",
+    "image": "",
+    "createdAt": "2026-09-22T12:39:27.376Z",
+    "updatedAt": "2026-10-19T10:16:44.938Z"
   }
 ]
