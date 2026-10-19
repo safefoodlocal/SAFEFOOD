@@ -1,13 +1,5 @@
 [
   {
-    "id": "e0b5fa9a-0d53-4207-a5c2-32a2de79845f",
-    "slug": "a-little-ritual-for-slower-mornings",
-    "title": "A little ritual for slower mornings",
-    "content": "Some mornings call for a shorter list and a better breakfast. A bowl of fruit, a spoonful of yogurt and a few quiet minutes can change the pace of the whole day.\n\nStart with what is in season\nFresh fruit brings its own color and sweetness. Keep it simple, add a handful of nuts if you like, and let breakfast be something you look forward to.\n\nGood food does not need a complicated plan. It just needs a little care.",
-    "createdAt": "2026-10-08T12:39:27.376Z",
-    "updatedAt": "2026-10-08T12:39:27.376Z"
-  },
-  {
     "id": "47ca3c94-fcba-41f8-84ee-2fb53fea3103",
     "slug": "why-the-olive-tree-belongs-at-the-table",
     "title": "Why the olive tree belongs at the table",
@@ -46,5 +38,14 @@
     "content": "Frozen produce makes it easier to cook something nourishing on a busy day. It is ready when you are, with no washing or chopping needed.\n\nMake weeknight cooking simple\nAdd vegetables straight to soups, pasta or a quick pan meal. Keep a few favorites on hand and dinner starts with one less decision.",
     "createdAt": "2026-09-18T12:39:27.376Z",
     "updatedAt": "2026-09-18T12:39:27.376Z"
+  },
+  {
+    "id": "e0b5fa9a-0d53-4207-a5c2-32a2de79845f",
+    "slug": "a-little-ritual-for-slower-mornings",
+    "title": "A little ritual for slower mornings",
+    "content": "Some mornings call for a shorter list and a better breakfast. A bowl of fruit, a spoonful of yogurt and a few quiet minutes can change the pace of the whole day.\n\nStart with what is in season\nFresh fruit brings its own color and sweetness. Keep it simple, add a handful of nuts if you like, and let breakfast be something you look forward to.\n\nGood food does not need a complicated plan. It just needs a little care.",
+    "image": "",
+    "createdAt": "2026-10-08T12:39:27.376Z",
+    "updatedAt": "2026-10-19T10:08:35.490Z"
   }
 ]
